@@ -30,9 +30,31 @@ if [ -f www/Procfile ]; then
   mv www/Procfile .
 fi
 
+# apache
+wget http://apache.cyberuse.com/httpd/httpd-$APACHE_VERSION.tar.gz
+tar xvzf httpd-$APACHE_VERSION.tar.gz
+cd httpd-$APACHE_VERSION
+./configure --prefix=/app/apache --enable-rewrite
+make
+make install
+cd ..
 
-tar xzvf $LP_DIR/conf/apache-$APACHE_VERSION.tar.gz
-tar xzvf $LP_DIR/conf/php-$PHP_VERSION.tar.gz
+# php
+wget http://php.net/get/php-$PHP_VERSION.tar.gz/from/this/mirror
+mv mirror php-$PHP_VERSION.tar.gz
+tar xzvf php-$PHP_VERSION.tar.gz
+cd php-$PHP_VERSION/
+./configure --prefix=/app/php --enable-fastcgi --with-apxs2=/app/apache/bin/apxs     \
+--with-mysql --with-pdo-mysql --with-pgsql --with-pdo-pgsql         \
+--with-iconv --with-gd --with-curl=/usr/lib                         \
+--with-config-file-path=/app/php --enable-soap=shared               \
+--with-openssl --enable-sockets
+make
+make install
+cd ..
+
+#tar xzvf $LP_DIR/conf/apache-$APACHE_VERSION.tar.gz
+#tar xzvf $LP_DIR/conf/php-$PHP_VERSION.tar.gz
 cd php
 mkdir -p ext
 cp $LP_DIR/conf/libmcrypt.so.4 ext
