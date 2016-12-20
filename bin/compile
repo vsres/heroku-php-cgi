@@ -55,7 +55,7 @@ cd ..
 
 #tar xzvf $LP_DIR/conf/apache-$APACHE_VERSION.tar.gz
 #tar xzvf $LP_DIR/conf/php-$PHP_VERSION.tar.gz
-cd app/php
+cd /app/php
 mkdir -p ext
 cp $LP_DIR/conf/libmcrypt.so.4 ext
 cd lib/php/extensions/no-debug-non-zts-20090626/
